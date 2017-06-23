@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * Implements hook_webform_component_info().
+ */
+function jpg_webform_urlbackfield_webform_component_info() {
+  $components = array();
+  $components['jpgurlbackfield'] = array(
+    'label' => t('URL Back'),
+    'description' => t('URL which user used to access to the Webform.'),
+    'file' => 'components/jpgurlbackfield.inc',
+    'features' => array(
+      'required' => FALSE,
+      'description' => FALSE,
+      'email_address' => TRUE,
+      'email_name' => TRUE,
+      'title_display' => FALSE,
+      'private' => FALSE,
+      'wrapper_classes' => FALSE,
+      'css_classes' => FALSE,
+      'conditional_action_set' => TRUE,
+    ),
+  );
+  return $components;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function jpg_webform_urlbackfield_form_alter( &$form, &$form_state, $form_id ) {
+  if('webform_client_form_' == (substr($form_id,0,20))) {
+    foreach($form_state['webform']['component_tree']['children'] as $key => $obj) {
+      if($obj['type'] == 'jpgurlbackfield') {
+        $form['submitted'][$obj['form_key']]['#default_value'] = $_SERVER['HTTP_REFERER'];
+      }
+    }
+  }
+}

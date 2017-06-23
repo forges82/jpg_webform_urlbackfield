@@ -1,0 +1,3 @@
+name = URL Back Field for Webform
+description = Save the URL which user used to access to the Webform
+core = 7.x
